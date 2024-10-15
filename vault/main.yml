@@ -30,6 +30,7 @@
         owner: vault
         group: vault
         mode: 0644
+      notify: restart-vault
     - name: Copy vault service.
       copy:
         src: "vault.service"
