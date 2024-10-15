@@ -1,0 +1,82 @@
+---
+
+- name: Kubernetes setup role.
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Disable swap.
+      lineinfile:
+        path: "/etc/fstab"
+        regexp: "^([^#].*swap.*)$"
+        line: "# \\1"
+        state: present
+        backrefs: yes
+      notify: disable-swap
+    - name: Copy containerd modules conf.
+      copy:
+        src: "containerd-modules.conf"
+        dest: "/etc/modules-load.d/containerd.conf"
+      notify: enable-modules
+    - name: Copy ip forwarding config.
+      copy:
+        src: "ipforward.conf"
+        dest: "/etc/sysctl.d/99-kubernetes-k8s.conf"
+      notify: reload-system
+    - name: Add k8s apt key.
+      apt_key:
+        url: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/deb/Release.key"
+        state: present
+    - name: Add k8s apt repository.
+      apt_repository:
+        repo: "deb https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/deb /"
+        state: present
+    - name: Update apt.
+      apt:
+        update_cache: yes
+    - name: Install containerd.
+      apt:
+        name: "containerd={{ containerd_version }}"
+        state: present
+    - name: Hold containerd.
+      dpkg_selections:
+        name: containerd
+        state: hold
+    - name: Copy containerd config.
+      copy:
+        src: "containerd.toml"
+        dest: "/etc/containerd/config.toml"
+      notify: restart-containerd
+    - name: Enable containerd.
+      systemd_service:
+        name: containerd
+        enabled: yes
+    - name: Install k8s.
+      apt:
+        pkg:
+          - "kubelet={{ k8s_version }}"
+          - "kubeadm={{ k8s_version }}"
+          - "kubectl={{ k8s_version }}"
+        state: present
+    - name: Hold kubelet.
+      dpkg_selections:
+        name: kubelet
+        state: hold
+    - name: Hold kubeadm.
+      dpkg_selections:
+        name: kubeadm
+        state: hold
+    - name: Hold kubectl.
+      dpkg_selections:
+        name: kubectl
+        state: hold
+  handlers:
+    - name: disable-swap
+      shell: "swapoff -a"
+    - name: enable-modules
+      shell: "modprobe overlay && modprobe br_netfilter"
+    - name: reload-system
+      shell: "sysctl --system"
+    - name: restart-containerd
+      systemd_service:
+        name: containerd
+        state: restarted
