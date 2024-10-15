@@ -9,6 +9,7 @@
         msg: "Force handlers !"
       tags: force-handlers
       changed_when: true
+      notify: force-handlers
     - name: Disable swap.
       lineinfile:
         path: "/etc/fstab"
