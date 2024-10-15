@@ -35,7 +35,7 @@
         update_cache: yes
     - name: Install containerd.
       apt:
-        name: "containerd={{ containerd_version }}"
+        name: "containerd>={{ containerd_version }}"
         state: present
     - name: Hold containerd.
       dpkg_selections:
