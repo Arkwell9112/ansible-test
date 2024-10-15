@@ -53,9 +53,9 @@
     - name: Install k8s.
       apt:
         pkg:
-          - "kubelet={{ k8s_version }}"
-          - "kubeadm={{ k8s_version }}"
-          - "kubectl={{ k8s_version }}"
+          - "kubelet={{ k8s_package_version }}"
+          - "kubeadm={{ k8s_package_version }}"
+          - "kubectl={{ k8s_package_version }}"
         state: present
     - name: Hold kubelet.
       dpkg_selections:
