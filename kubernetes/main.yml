@@ -4,6 +4,10 @@
   hosts: localhost
   become: yes
   tasks:
+    - name: Force handlers.
+      debug:
+        msg: "Force handlers !"
+      tags: force-handlers
     - name: Disable swap.
       lineinfile:
         path: "/etc/fstab"
@@ -72,11 +76,15 @@
   handlers:
     - name: disable-swap
       shell: "swapoff -a"
+      listen: force-handlers
     - name: enable-modules
       shell: "modprobe overlay && modprobe br_netfilter"
+      listen: force-handlers
     - name: reload-system
       shell: "sysctl --system"
+      listen: force-handlers
     - name: restart-containerd
       systemd_service:
         name: containerd
         state: restarted
+      listen: force-handlers
