@@ -40,7 +40,7 @@
     - name: Hold containerd.
       dpkg_selections:
         name: containerd
-        state: hold
+        selection: hold
     - name: Copy containerd config.
       copy:
         src: "containerd.toml"
@@ -60,15 +60,15 @@
     - name: Hold kubelet.
       dpkg_selections:
         name: kubelet
-        state: hold
+        selection: hold
     - name: Hold kubeadm.
       dpkg_selections:
         name: kubeadm
-        state: hold
+        selection: hold
     - name: Hold kubectl.
       dpkg_selections:
         name: kubectl
-        state: hold
+        selection: hold
   handlers:
     - name: disable-swap
       shell: "swapoff -a"
