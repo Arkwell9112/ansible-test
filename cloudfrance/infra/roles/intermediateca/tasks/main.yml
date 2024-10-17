@@ -62,24 +62,11 @@
     path: "{{ engine_path }}/issuer/{{ intermediate_import.data.data.imported_issuers[0] | default(intermediate_ca_ref) }}"
     data:
       issuer_name: "{{ intermediate_ca_ref }}"
-      leaf_not_after_behaviour: "truncate"
+      leaf_not_after_behavior: "truncate"
       issuing_certificates:
         - "{{ vault_addr }}/v1{{ engine_path }}/ca"
       crl_distribution_points:
         - "{{ vault_addr }}/v1{{ engine_path }}/crl"
       ocsp_servers:
         - "{{ vault_addr }}/v1{{ engine_path }}/ocsp"
-  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.issuing_certificates | length == 0)
-- name: Set issuer data leaf expiration.
-  community.hashi_vault.vault_write:
-    path: "{{ engine_path }}/issuer/{{ intermediate_ca_ref }}"
-    data:
-      issuer_name: "{{ intermediate_ca_ref }}"
-      leaf_not_after_behaviour: "truncate"
-      issuing_certificates:
-        - "{{ vault_addr }}/v1{{ engine_path }}/ca"
-      crl_distribution_points:
-        - "{{ vault_addr }}/v1{{ engine_path }}/crl"
-      ocsp_servers:
-        - "{{ vault_addr }}/v1{{ engine_path }}/ocsp"
-  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.leaf_not_after_behaviour != "truncate")
+  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.leaf_not_after_behavior != "truncate")

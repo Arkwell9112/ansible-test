@@ -29,7 +29,7 @@
     path: "{{ engine_path }}/issuer/{{ root_ca_ref }}"
     data:
       issuer_name: "{{ root_ca_ref }}"
-      leaf_not_after_behaviour: "truncate"
+      leaf_not_after_behavior: "truncate"
       issuing_certificates:
         - "{{ vault_addr }}/v1{{ engine_path }}/ca"
       crl_distribution_points:
