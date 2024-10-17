@@ -55,10 +55,11 @@
     path: "{{ engine_path }}/intermediate/set-signed"
     data:
       certificate: "{{ intermediate_cert.data.data.certificate }}"
+  register: intermediate_import
   when: issuer_ref.data is not defined
 - name: Set issuer data.
   community.hashi_vault.vault_write:
-    path: "{{ engine_path }}/issuer/{{ intermediate_cert.data.data.imported_issuers[0] | default(intermediate_ca_ref) }}"
+    path: "{{ engine_path }}/issuer/{{ intermediate_import.data.data.imported_issuers[0] | default(intermediate_ca_ref) }}"
     data:
       issuer_name: "{{ root_ca_ref }}"
       leaf_not_after_behaviour: "truncate"
