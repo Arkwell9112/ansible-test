@@ -48,18 +48,18 @@
   community.hashi_vault.vault_write:
     path: "{{ root_engine_path }}/issuer/{{ root_ca_ref }}/sign-intermediate"
     data:
-      csr: intermediate_csr.data.data.csr
+      csr: intermediate_csr.data.csr
   register: intermediate_cert
   when: issuer_ref.data is not defined
 - name: Import intermediate-ca.
   community.hashi_vault.vault_write:
     path: "{{ engine_path }}/intermediate/set-signed"
     data:
-      certificate: intermediate_cert.data.data.certificate
+      certificate: intermediate_cert.data.certificate
   when: issuer_ref.data is not defined
 - name: Set issuer data.
   community.hashi_vault.vault_write:
-    path: "{{ engine_path }}/issuer/{{ intermediate_cert.data.data.serial_number | default(intermediate_ca_ref) }}"
+    path: "{{ engine_path }}/issuer/{{ intermediate_cert.data.serial_number | default(intermediate_ca_ref) }}"
     data:
       issuer_name: "{{ root_ca_ref }}"
       leaf_not_after_behaviour: "truncate"
@@ -69,4 +69,4 @@
         - "{{ vault_addr }}/v1{{ engine_path }}/crl"
       ocsp_servers:
         - "{{ vault_addr }}/v1{{ engine_path }}/ocsp"
-  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.issuing_certificates | length == 0)
+  when: (issuer_ref.data is not defined) or (issuer_ref.data.issuing_certificates | length == 0)
