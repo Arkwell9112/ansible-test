@@ -1,6 +1,6 @@
 ---
 
-- name: create root ca.
+- name: Create root ca.
   hosts: localhost
   become: true
   collections:
