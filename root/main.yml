@@ -3,6 +3,7 @@
 - name: Create root ca.
   hosts: localhost
   become: true
+  become_method: sudo
   become_flags: "-i"
   collections:
     - cloudfrance.infra
