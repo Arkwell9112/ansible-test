@@ -1,0 +1,11 @@
+---
+
+- name: Install vault.
+  hosts: localhost
+  become: true
+  collections:
+    - cloudfrance.infra
+  tasks:
+    - name: Install vault using role.
+      import_role:
+        name: cloudfrance.infra.vault

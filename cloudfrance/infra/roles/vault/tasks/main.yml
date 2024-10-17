@@ -1,0 +1,37 @@
+---
+
+- name: Add vault apt key.
+  apt_key:
+    url: "https://apt.releases.hashicorp.com/gpg"
+    state: present
+- name: Add vault apt repository.
+  apt_repository:
+    repo: "deb https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    state: present
+- name: Update apt.
+  apt:
+    update_cache: yes
+- name: Install vault.
+  apt:
+    name: "vault={{ vault_version }}"
+    state: present
+- name: Hold vault.
+  dpkg_selections:
+    name: vault
+    selection: hold
+- name: Copy vault config.
+  copy:
+    src: "vault.hcl"
+    dest: "/etc/vault.d/vault.hcl"
+    owner: vault
+    group: vault
+    mode: 0644
+  notify: restart-vault
+- name: Copy vault service.
+  copy:
+    src: "vault.service"
+    dest: "/lib/systemd/system/vault.service"
+    owner: vault
+    group: vault
+    mode: 0644
+  notify: install-vault-service

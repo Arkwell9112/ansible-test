@@ -1,0 +1,16 @@
+---
+
+- name: reload-systemd-daemon
+  systemd_service:
+    daemon_reload: yes
+  listen: install-vault-service
+- name: enable-vault
+  systemd_service:
+    name: vault
+    enabled: yes
+  listen: install-vault-service
+- name: restart-vault
+  systemd_service:
+    name: vault
+    state: restarted
+  listen: install-vault-service

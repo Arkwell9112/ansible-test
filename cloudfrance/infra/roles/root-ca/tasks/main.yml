@@ -1,0 +1,26 @@
+---
+
+- name: Check if root-ca exists.
+  vault_read:
+    path: "{{ engine_path }}/issuer/{{ root_ca_ref }}"
+  register: issuer_ref
+  ignore_errors: true
+  changed_when: false
+- name: Write root-ca if not exists.
+  vault_write:
+    path: "{{ engine_path }}/root/generate/internal"
+    data:
+      issuer_name: "{{ root_ca_ref }}"
+      key_name: "key.{{ root_ca_ref }}"
+      common_name: "{{ root_common }}"
+      ttl: "{{ ttl }}"
+      key_bits: "{{ key_bits }}"
+      max_path_length: "{{ max_path_length }}"
+      ou: "{{ ou }}"
+      organization: "{{ organization }}"
+      country: "{{ country }}"
+      locality: "{{ locality }}"
+      province: "{{ province }}"
+      street_address: "{{ street_address }}"
+      postal_code: "{{ postal_code }}"
+  when: issuer_ref.data is not defined

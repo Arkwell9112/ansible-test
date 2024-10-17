@@ -1,0 +1,33 @@
+namespace: cloudfrance
+
+name: infra
+
+version: 1.0.0
+
+readme: README.md
+
+authors:
+  - cloudfrance <cloudfrance@cloudfrance.fr>
+
+
+description: Collection for infra setup at cloudfrance.
+
+license:
+  - GPL-2.0-or-later
+
+license_file: ''
+
+tags: [ ]
+
+dependencies:
+  community.hashi_vault: "=6.2.0"
+
+repository: https://cloudfrance.fr/repository
+
+documentation: https://infra.ansible.docs.cloudfrance.fr
+
+homepage: https://cloudfrance.fr
+
+issues: https://cloudfrance.fr/issue/tracker
+
+build_ignore: [ ]
