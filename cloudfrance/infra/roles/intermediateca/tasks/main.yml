@@ -34,7 +34,6 @@
           key_ref: "key.{{ intermediate_ca_ref }}"
           common_name: "{{ intermediate_common }}"
           ttl: "{{ ttl }}"
-          key_bits: "{{ key_bits }}"
           max_path_length: "{{ max_path_length }}"
           ou: "{{ ou }}"
           organization: "{{ organization }}"
