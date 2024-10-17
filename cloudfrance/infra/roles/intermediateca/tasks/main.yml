@@ -47,7 +47,7 @@
   community.hashi_vault.vault_write:
     path: "{{ root_engine_path }}/issuer/{{ root_ca_ref }}/sign-intermediate"
     data:
-      csr: "{{ intermediate_csr.data.csr }}"
+      csr: "{{ intermediate_csr.data.data.csr }}"
   register: intermediate_cert
   when: issuer_ref.data is not defined
 - name: Import intermediate-ca.
