@@ -54,7 +54,7 @@
   community.hashi_vault.vault_write:
     path: "{{ engine_path }}/intermediate/set-signed"
     data:
-      certificate: intermediate_cert.data.data.certificate
+      certificate: "{{ intermediate_cert.data.data.certificate }}"
   when: issuer_ref.data is not defined
 - name: Set issuer data.
   community.hashi_vault.vault_write:
