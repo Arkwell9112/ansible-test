@@ -3,7 +3,7 @@
 - name: Create root ca.
   hosts: localhost
   become: true
-  become_flags: "-E"
+  become_flags: '-E'
   collections:
     - cloudfrance.infra
   tasks:
