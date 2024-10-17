@@ -1,0 +1,11 @@
+---
+
+- name: create root ca.
+  hosts: localhost
+  become: true
+  collections:
+    - cloudfrance.infra
+  tasks:
+    - name: Create root ca using role.
+      import_role:
+        name: cloudfrance.infra.root-ca

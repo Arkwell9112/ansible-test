@@ -1,0 +1,12 @@
+---
+
+engine_path: "/pki/root"
+root_ca_ref: "0.root.cloudfrance.fr"
+root_common: "root.cloudfrance.fr"
+ou: "Root"
+organization: "CloudFrance"
+country: "France"
+locality: "Paris"
+province: "Paris"
+street_address: "Paris"
+postal_code: "75"
