@@ -8,4 +8,4 @@
   tasks:
     - name: Create root ca using role.
       import_role:
-        name: cloudfrance.infra.root-ca
+        name: cloudfrance.infra.rootca
