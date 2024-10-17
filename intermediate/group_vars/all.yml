@@ -1,0 +1,15 @@
+---
+
+engine_path: "/pki/kubernetes"
+root_engine_path: "/pki/root"
+intermediate_ca_ref: "0.kubernetes.cloudfrance.fr"
+root_ca_ref: "0.root.cloudfrance.fr"
+intermediate_common: "kubernetes.cloudfrance.fr"
+ou: "kubernetes"
+organization: "CloudFrance"
+country: "France"
+locality: "Paris"
+province: "Paris"
+street_address: "Paris"
+postal_code: "75"
+vault_addr: "https://vault.cloudfrance.ifr"

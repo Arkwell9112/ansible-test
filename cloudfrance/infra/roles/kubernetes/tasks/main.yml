@@ -12,7 +12,7 @@
     regexp: "^([^#].*swap.*)$"
     line: "# \\1"
     state: present
-    backrefs: yes
+    backrefs: true
   notify: disable-swap
 - name: Copy containerd modules conf.
   copy:
@@ -34,7 +34,7 @@
     state: present
 - name: Update apt.
   apt:
-    update_cache: yes
+    update_cache: true
 - name: Install containerd.
   apt:
     name: "containerd={{ containerd_version }}"
@@ -51,7 +51,7 @@
 - name: Enable containerd.
   systemd_service:
     name: containerd
-    enabled: yes
+    enabled: true
 - name: Install k8s.
   apt:
     pkg:

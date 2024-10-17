@@ -1,0 +1,72 @@
+---
+
+- name: Check if intermediate-ca exists.
+  community.hashi_vault.vault_read:
+    path: "{{ engine_path }}/issuer/{{ intermediate_ca_ref }}"
+  register: issuer_ref
+  ignore_errors: true
+  changed_when: false
+- name: Block - Generate intermediate-ca csr if not exists.
+  block:
+    - name: Generate intermediate-ca csr if not exists.
+      community.hashi_vault.vault_write:
+        path: "{{ engine_path }}/intermediate/generate/internal"
+        data:
+          key_name: "key.{{ intermediate_ca_ref }}"
+          common_name: "{{ intermediate_common }}"
+          ttl: "{{ ttl }}"
+          key_bits: "{{ key_bits }}"
+          max_path_length: "{{ max_path_length }}"
+          ou: "{{ ou }}"
+          organization: "{{ organization }}"
+          country: "{{ country }}"
+          locality: "{{ locality }}"
+          province: "{{ province }}"
+          street_address: "{{ street_address }}"
+          postal_code: "{{ postal_code }}"
+      register: intermediate_csr
+      when: issuer_ref.data is not defined
+  rescue:
+    - name: Rescue - Generate intermediate-ca csr if not exists.
+      community.hashi_vault.vault_write:
+        path: "{{ engine_path }}/intermediate/generate/existing"
+        data:
+          key_ref: "key.{{ intermediate_ca_ref }}"
+          common_name: "{{ intermediate_common }}"
+          ttl: "{{ ttl }}"
+          key_bits: "{{ key_bits }}"
+          max_path_length: "{{ max_path_length }}"
+          ou: "{{ ou }}"
+          organization: "{{ organization }}"
+          country: "{{ country }}"
+          locality: "{{ locality }}"
+          province: "{{ province }}"
+          street_address: "{{ street_address }}"
+          postal_code: "{{ postal_code }}"
+      register: intermediate_csr
+- name: Sign intermediate-ca.
+  community.hashi_vault.vault_write:
+    path: "{{ root_engine_path }}/issuer/{{ root_ca_ref }}/sign-intermediate"
+    data:
+      csr: intermediate_csr.data.data.csr
+  register: intermediate_cert
+  when: issuer_ref.data is not defined
+- name: Import intermediate-ca.
+  community.hashi_vault.vault_write:
+    path: "{{ engine_path }}/intermediate/set-signed"
+    data:
+      certificate: intermediate_cert.data.data.certificate
+  when: issuer_ref.data is not defined
+- name: Set issuer data.
+  community.hashi_vault.vault_write:
+    path: "{{ engine_path }}/issuer/{{ intermediate_cert.data.data.serial_number | default(intermediate_ca_ref) }}"
+    data:
+      issuer_name: "{{ root_ca_ref }}"
+      leaf_not_after_behaviour: "truncate"
+      issuing_certificates:
+        - "{{ vault_addr }}/v1{{ engine_path }}/ca"
+      crl_distribution_points:
+        - "{{ vault_addr }}/v1{{ engine_path }}/crl"
+      ocsp_servers:
+        - "{{ vault_addr }}/v1{{ engine_path }}/ocsp"
+  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.issuing_certificates | length == 0)

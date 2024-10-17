@@ -10,7 +10,7 @@
     state: present
 - name: Update apt.
   apt:
-    update_cache: yes
+    update_cache: true
 - name: Install vault.
   apt:
     name: "vault={{ vault_version }}"
