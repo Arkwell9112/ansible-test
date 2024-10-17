@@ -24,16 +24,3 @@
       street_address: "{{ street_address }}"
       postal_code: "{{ postal_code }}"
   when: issuer_ref.data is not defined
-- name: Set issuer data.
-  community.hashi_vault.vault_write:
-    path: "{{ engine_path }}/issuer/{{ root_ca_ref }}"
-    data:
-      issuer_name: "{{ root_ca_ref }}"
-      leaf_not_after_behaviour: "truncate"
-      issuing_certificates:
-        - "{{ vault_addr }}/v1/{{ engine_path }}/ca"
-      crl_distribution_points:
-        - "{{ vault_addr }}/v1/{{ engine_path }}/crl"
-      ocsp_servers:
-        - "{{ vault_addr }}/v1/{{ engine_path }}/ocsp"
-  when: issuer_ref.data is not defined
