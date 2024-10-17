@@ -35,3 +35,4 @@
         - "{{ vault_addr }}/v1/{{ engine_path }}/crl"
       ocsp_servers:
         - "{{ vault_addr }}/v1/{{ engine_path }}/ocsp"
+  when: issuer_ref.data is not defined
