@@ -4,8 +4,8 @@
   community.hashi_vault.vault_read:
     path: "{{ engine_path }}/issuer/{{ root_ca_ref }}"
   register: issuer_ref
-  ignore_errors: true
   changed_when: false
+  failed_when: false
 - name: Write root-ca if not exists.
   community.hashi_vault.vault_write:
     path: "{{ engine_path }}/root/generate/internal"
