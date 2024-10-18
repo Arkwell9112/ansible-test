@@ -31,8 +31,8 @@
       province: "{{ province }}"
       street_address: "{{ street_address }}"
       postal_code: "{{ postal_code }}"
-    register: intermediate_csr
-    when: issuer_ref.data is not defined
+  register: intermediate_csr
+  when: issuer_ref.data is not defined
 - name: Sign intermediate-ca.
   community.hashi_vault.vault_write:
     path: "{{ root_engine_path }}/issuer/{{ root_ca_ref }}/sign-intermediate"
