@@ -22,5 +22,6 @@
       key_usage:
         - "DigitalSignature"
         - "KeyEncipherment"
+      ext_key_usage: "{{ certs[cert_type].key_usage }}"
       organization: "{{ certs[cert_type].organization }}"
   when: role_ref is not defined

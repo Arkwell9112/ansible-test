@@ -18,6 +18,9 @@
       enforce_hostnames: false
       allow_ip_sans: "{{ certs[cert_type].ip_sans }}"
       key_bits: "{{ key_bits }}"
-      key_usage: "{{ certs[cert_type].key_usage }}"
+      key_usage:
+        - "DigitalSignature"
+        - "KeyEncipherment"
+      ext_key_usage: "{{ certs[cert_type].key_usage }}"
       organization: "{{ certs[cert_type].organization }}"
   when: role_ref.data is not defined

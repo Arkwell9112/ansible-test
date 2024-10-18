@@ -11,8 +11,6 @@
     certs:
       controller_manager:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "system:kube-controller-manager" ]
         localhost: false
@@ -20,8 +18,6 @@
         organization: ""
       scheduler:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "system:kube-scheduler" ]
         localhost: false

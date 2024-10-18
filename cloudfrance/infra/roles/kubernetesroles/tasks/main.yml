@@ -23,8 +23,6 @@
     certs:
       kube_etcd:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageServerAuth"
           - "ExtKeyUsageClientAuth"
         domains:
@@ -36,8 +34,6 @@
         organization: ""
       kube_etcd_peer:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageServerAuth"
           - "ExtKeyUsageClientAuth"
         domains:
@@ -49,8 +45,6 @@
         organization: ""
       kube_etcd_healthcheck_client:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "kube-etcd-healthcheck-client" ]
         localhost: false
@@ -58,8 +52,6 @@
         organization: ""
       kube_apiserver_etcd_client:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "kube-apiserver-etcd-client" ]
         localhost: false
@@ -67,8 +59,6 @@
         organization: ""
       kube_apiserver:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageServerAuth"
         domains:
           - "kube-apiserver"
@@ -83,8 +73,6 @@
         organization: ""
       kube_apiserver_kubelet_client:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "kube-apiserver-kubelet-client" ]
         localhost: false
@@ -92,8 +80,6 @@
         organization: "system:masters"
       front_proxy_client:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "front-proxy-client" ]
         localhost: false
@@ -101,8 +87,6 @@
         organization: ""
       kubelet:
         key_usage:
-          - "DigitalSignature"
-          - "KeyEncipherment"
           - "ExtKeyUsageClientAuth"
         domains: [ "system:nodes:{{ cert_hostname }}" ]
         localhost: false
