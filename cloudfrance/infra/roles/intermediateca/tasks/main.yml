@@ -18,8 +18,8 @@
   community.hashi_vault.vault_write:
     path: "{{ engine_path }}/intermediate/generate/{{ \"internal\" if key_ref.data is not defined else \"existing\" }}"
     data:
-      key_name: "{{ key_value if key_ref.data is not defined else null }}"
-      key_ref: "{{ key_value if key_ref.data is defined else null }}"
+      key_name: "{{ key_value if key_ref.data is not defined else none }}"
+      key_ref: "{{ key_value if key_ref.data is defined else none }}"
       common_name: "{{ intermediate_common }}"
       ttl: "{{ ttl }}"
       key_bits: "{{ key_bits }}"
