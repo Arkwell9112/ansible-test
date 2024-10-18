@@ -107,6 +107,6 @@
   block:
     - name: Loop over roles.
       include_tasks: "block.yml"
-      loop: cert_types
+      loop: "{{ cert_types }}"
       loop_control:
         loop_var: cert_type
