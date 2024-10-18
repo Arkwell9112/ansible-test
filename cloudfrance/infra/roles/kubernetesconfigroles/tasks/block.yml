@@ -2,13 +2,13 @@
 
 - name: Check if role exists.
   community.hashi_vault.vault_read:
-    path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_hostname }}_{{ cert_type }}"
+    path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_type }}"
   register: role_ref
   changed_when: false
   failed_when: false
 - name: Create role if not exists.
   community.hashi_vault.vault_write:
-    path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_hostname }}_{{ cert_type }}"
+    path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_type }}"
     data:
       ttl: "{{ ttl }}"
       allow_localhost: "{{ certs[cert_type].localhost }}"
@@ -23,4 +23,4 @@
         - "DigitalSignature"
         - "KeyEncipherment"
       organization: "{{ certs[cert_type].organization }}"
-  when: role_ref.data is not defined
+  when: role_ref is not defined

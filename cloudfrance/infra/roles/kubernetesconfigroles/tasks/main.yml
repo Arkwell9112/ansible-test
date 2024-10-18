@@ -10,44 +10,26 @@
       scheduler: "kubernetes"
     certs:
       controller_manager:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "system:kube-controller-manager" ]
         localhost: false
         ip_sans: false
         organization: ""
       scheduler:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "system:kube-scheduler" ]
         localhost: false
         ip_sans: false
         organization: ""
   block:
-    - name: Check if role exists.
-      community.hashi_vault.vault_read:
-        path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_type }}"
-      register: role_ref
-      changed_when: false
-      failed_when: false
-    - name: Create role if not exists.
-      community.hashi_vault.vault_write:
-        path: "{{ engine_path }}/{{ certs_path[cert_type] }}/roles/{{ cert_type }}"
-        data:
-          ttl: "{{ ttl }}"
-          allow_localhost: "{{ certs[cert_type].localhost }}"
-          allowed_domains: "{{ certs[cert_type].domains }}"
-          allow_bare_domains: true
-          allow_wildcard_certificates: false
-          allow_ip_sans: "{{ certs[cert_type].ip_sans }}"
-          server_flag: "{{ certs[cert_type].server }}"
-          client_flag: "{{ certs[cert_type].client }}"
-          key_bits: "{{ key_bits }}"
-          key_usage:
-            - "DigitalSignature"
-            - "KeyEncipherment"
-          organization: "{{ certs[cert_type].organization }}"
-      when: role_ref is not defined
-  loop: cert_types
-  loop_control:
-    loop_var: cert_type
+    - name: Loop over roles.
+      include_tasks: "block.yml"
+      loop: "{{ cert_types }}"
+      loop_control:
+        loop_var: cert_type

@@ -22,8 +22,11 @@
       kubelet: "kubernetes"
     certs:
       kube_etcd:
-        server: true
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageServerAuth"
+          - "ExtKeyUsageClientAuth"
         domains:
           - "kube-etcd"
           - "{{ cert_hostname }}"
@@ -32,8 +35,11 @@
         ip_sans: true
         organization: ""
       kube_etcd_peer:
-        server: true
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageServerAuth"
+          - "ExtKeyUsageClientAuth"
         domains:
           - "kube-etcd-peer"
           - "{{ cert_hostname }}"
@@ -42,22 +48,28 @@
         ip_sans: true
         organization: ""
       kube_etcd_healthcheck_client:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "kube-etcd-healthcheck-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kube_apiserver_etcd_client:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "kube-apiserver-etcd-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kube_apiserver:
-        server: true
-        client: false
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageServerAuth"
         domains:
           - "kube-apiserver"
           - "{{ cert_hostname }}"
@@ -70,43 +82,35 @@
         ip_sans: true
         organization: ""
       kube_apiserver_kubelet_client:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "kube-apiserver-kubelet-client" ]
         localhost: false
         ip_sans: false
         organization: "system:masters"
       front_proxy_client:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "front-proxy-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kubelet:
-        server: false
-        client: true
+        key_usage:
+          - "DigitalSignature"
+          - "KeyEncipherment"
+          - "ExtKeyUsageClientAuth"
         domains: [ "system:nodes:{{ cert_hostname }}" ]
         localhost: false
         ip_sans: false
         organization: "system:nodes"
-      controller_manager:
-        server: false
-        client: true
-        domains: [ "system:kube-controller-manager" ]
-        localhost: false
-        ip_sans: false
-        organization: ""
-      scheduler:
-        server: false
-        client: true
-        domains: [ "system:kube-scheduler" ]
-        localhost: false
-        ip_sans: false
-        organization: ""
   block:
     - name: Loop over roles.
-      include_tasks: "block.yml"
+      include_tasks: "create.yml"
       loop: "{{ cert_types }}"
       loop_control:
         loop_var: cert_type
