@@ -23,4 +23,4 @@
         - "DigitalSignature"
         - "KeyEncipherment"
       organization: "{{ certs[cert_type].organization }}"
-  when: role_ref is not defined
+  when: role_ref.data is not defined
