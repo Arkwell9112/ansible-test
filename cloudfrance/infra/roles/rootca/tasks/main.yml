@@ -36,4 +36,4 @@
         - "{{ vault_addr }}/v1{{ engine_path }}/crl"
       ocsp_servers:
         - "{{ vault_addr }}/v1{{ engine_path }}/ocsp"
-  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.issuing_certificates | length == 0)
+  when: (issuer_ref.data is not defined) or (issuer_ref.data.data.leaf_not_after_behavior != "truncate")

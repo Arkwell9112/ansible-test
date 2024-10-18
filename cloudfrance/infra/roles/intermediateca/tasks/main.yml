@@ -4,45 +4,35 @@
   community.hashi_vault.vault_read:
     path: "{{ engine_path }}/issuer/{{ intermediate_ca_ref }}"
   register: issuer_ref
-  ignore_errors: true
   changed_when: false
-- name: Block - Generate intermediate-ca csr if not exists.
-  block:
-    - name: Generate intermediate-ca csr if not exists.
-      community.hashi_vault.vault_write:
-        path: "{{ engine_path }}/intermediate/generate/internal"
-        data:
-          key_name: "key.{{ intermediate_ca_ref }}"
-          common_name: "{{ intermediate_common }}"
-          ttl: "{{ ttl }}"
-          key_bits: "{{ key_bits }}"
-          max_path_length: "{{ max_path_length }}"
-          ou: "{{ ou }}"
-          organization: "{{ organization }}"
-          country: "{{ country }}"
-          locality: "{{ locality }}"
-          province: "{{ province }}"
-          street_address: "{{ street_address }}"
-          postal_code: "{{ postal_code }}"
-      register: intermediate_csr
-      when: issuer_ref.data is not defined
-  rescue:
-    - name: Rescue - Generate intermediate-ca csr if not exists.
-      community.hashi_vault.vault_write:
-        path: "{{ engine_path }}/intermediate/generate/existing"
-        data:
-          key_ref: "key.{{ intermediate_ca_ref }}"
-          common_name: "{{ intermediate_common }}"
-          ttl: "{{ ttl }}"
-          max_path_length: "{{ max_path_length }}"
-          ou: "{{ ou }}"
-          organization: "{{ organization }}"
-          country: "{{ country }}"
-          locality: "{{ locality }}"
-          province: "{{ province }}"
-          street_address: "{{ street_address }}"
-          postal_code: "{{ postal_code }}"
-      register: intermediate_csr
+  failed_when: false
+- name: Check if intermediate-ca key exists.
+  community.hashi_vault.vault_read:
+    path: "{{ engine_path }}/key/key.{{ intermediate_ca_ref }}"
+  register: key_ref
+  changed_when: false
+  failed_when: false
+- name: Generate intermediate-ca csr if not exists.
+  vars:
+    key_value: "key.{{ intermediate_ca_ref }}"
+  community.hashi_vault.vault_write:
+    path: "{{ engine_path }}/intermediate/generate/{{ \"internal\" if key_ref.data is not defined else \"existing\" }}"
+    data:
+      key_name: "{{ key_value if key_ref.data is not defined else null }}"
+      key_ref: "{{ key_value if key_ref.data is defined else null }}"
+      common_name: "{{ intermediate_common }}"
+      ttl: "{{ ttl }}"
+      key_bits: "{{ key_bits }}"
+      max_path_length: "{{ max_path_length }}"
+      ou: "{{ ou }}"
+      organization: "{{ organization }}"
+      country: "{{ country }}"
+      locality: "{{ locality }}"
+      province: "{{ province }}"
+      street_address: "{{ street_address }}"
+      postal_code: "{{ postal_code }}"
+    register: intermediate_csr
+    when: issuer_ref.data is not defined
 - name: Sign intermediate-ca.
   community.hashi_vault.vault_write:
     path: "{{ root_engine_path }}/issuer/{{ root_ca_ref }}/sign-intermediate"

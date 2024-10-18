@@ -1,0 +1,12 @@
+---
+
+- name: Create vault master node roles.
+  hosts: localhost
+  become: true
+  become_flags: "-E"
+  collections:
+    - cloudfrance.infra
+  tasks:
+    - name: Create vault master node roles using role.
+      import_role:
+        name: cloudfrance.infra.kubernetesroles

@@ -1,0 +1,4 @@
+---
+
+engine_path: "/cloudfrance/pki/kubernetes"
+cert_hostname: "vault"
