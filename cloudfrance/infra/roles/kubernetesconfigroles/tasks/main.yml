@@ -11,14 +11,14 @@
     certs:
       controller_manager:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "system:kube-controller-manager" ]
         localhost: false
         ip_sans: false
         organization: ""
       scheduler:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "system:kube-scheduler" ]
         localhost: false
         ip_sans: false

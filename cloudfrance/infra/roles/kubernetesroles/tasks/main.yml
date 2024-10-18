@@ -23,8 +23,8 @@
     certs:
       kube_etcd:
         key_usage:
-          - "ExtKeyUsageServerAuth"
-          - "ExtKeyUsageClientAuth"
+          - "ServerAuth"
+          - "ClientAuth"
         domains:
           - "kube-etcd"
           - "{{ cert_hostname }}"
@@ -34,8 +34,8 @@
         organization: ""
       kube_etcd_peer:
         key_usage:
-          - "ExtKeyUsageServerAuth"
-          - "ExtKeyUsageClientAuth"
+          - "ServerAuth"
+          - "ClientAuth"
         domains:
           - "kube-etcd-peer"
           - "{{ cert_hostname }}"
@@ -45,21 +45,21 @@
         organization: ""
       kube_etcd_healthcheck_client:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "kube-etcd-healthcheck-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kube_apiserver_etcd_client:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "kube-apiserver-etcd-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kube_apiserver:
         key_usage:
-          - "ExtKeyUsageServerAuth"
+          - "ServerAuth"
         domains:
           - "kube-apiserver"
           - "{{ cert_hostname }}"
@@ -73,21 +73,21 @@
         organization: ""
       kube_apiserver_kubelet_client:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "kube-apiserver-kubelet-client" ]
         localhost: false
         ip_sans: false
         organization: "system:masters"
       front_proxy_client:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "front-proxy-client" ]
         localhost: false
         ip_sans: false
         organization: ""
       kubelet:
         key_usage:
-          - "ExtKeyUsageClientAuth"
+          - "ClientAuth"
         domains: [ "system:nodes:{{ cert_hostname }}" ]
         localhost: false
         ip_sans: false
